@@ -1,0 +1,19 @@
+{
+	"id" : "blueswim",
+	"name" : "Blue Swim",
+	"description" : {
+		"fr_FR": "Plugin pour récupération des informations de votre Blue Connect",
+		"en_US": "Plugin for Blue Connect"
+	},
+	"licence" : "AGPL",
+	"author" : "Christophe Lampin",
+	"require" : "3.3.39",
+	"category" : "devicecommunication",
+	"hasDependency" : false,
+	"hasOwnDeamon" : false,
+	"maxDependancyInstallTime" : 0,
+	"changelog" : "",
+	"documentation" : "",
+	"language" : "",
+	"compatibility" : ""
+}
