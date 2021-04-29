@@ -1,3 +1,4 @@
-# Plugin template
+# Plugin blueswim
 
-La documentation pour utiliser le template de plugin se trouve [ici](https://doc.jeedom.com/fr_FR/dev/)
+- Renseignez vos identifiants BlueRiiot dans la configuration du plugin
+- Synchronisez vos blue connect avec le bouton Sync

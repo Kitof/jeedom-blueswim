@@ -1,26 +1,10 @@
-# Changelog plugin template
+# Changelog plugin blueswim
 
->**IMPORTANT**
->
->Pour rappel s'il n'y a pas d'information sur la mise à jour, c'est que celle-ci concerne uniquement de la mise à jour de documentation, de traduction ou de texte.
+# 29/04/2021
 
-# 20/11/2020
-
-- Présentation officielle V4
-- Ajouts d'éléments d'informations et de paramètres pour les commandes
-
-# 16/11/2020
-
-- version minimale Jeedom: 3.3.39 (dernière MAJ critique)
-
-# 04/11/2020
-
-- Nouvelle présentation de la liste des objets
-
-# 07/08/2020
-
+- Ajout de la salinité des modèles Blue Connect Plus
 - Ajout de commentaires
 
-# 17/05/2020
+# 28/04/2020
 
-- Mise à jour de la documentation
+- Version initiale

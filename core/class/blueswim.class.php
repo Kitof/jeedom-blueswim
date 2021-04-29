@@ -259,6 +259,25 @@ class blueswim extends eqLogic {
         $cmd->setDisplay('generic_type', 'GENERIC');
         $cmd->save();
         
+        if($this->getConfiguration('device') == 'blueplus') {
+            $cmd = $this->getCmd(null, 'salinity');
+            if (!is_object($cmd)) {
+                    $cmd = new blueswimCmd();
+                    $cmd->setLogicalId('salinity');
+                    $cmd->setUnite('g/l');
+                    $cmd->setIsVisible(1);
+                    $cmd->setIsHistorized(1);
+                    $cmd->setName(__('Salinity', __FILE__));
+                    $cmd->setConfiguration('minValue' , '0');
+                    $cmd->setConfiguration('maxValue' , '10');
+            }
+            $cmd->setType('info');
+            $cmd->setSubType('numeric');
+            $cmd->setEqLogic_id($this->getId());
+            $cmd->setDisplay('generic_type', 'GENERIC');
+            $cmd->save();
+        }
+        
         $cmd = $this->getCmd(null, 'refresh');
         if (!is_object($cmd)) {
                 $cmd = new blueswimCmd();
@@ -351,6 +370,10 @@ class blueswim extends eqLogic {
                 if( ($lastMeasure['name'] == 'orp') && ($lastMeasure['issuer'] != 'strip') ) {
                         $blueswim->checkAndUpdateCmd('orp', $lastMeasure['value'],date('Y-m-d H:i:s',strtotime($lastMeasure['timestamp'])));
                         log::add('blueswim', 'info', "orp: ".$lastMeasure['value']." en date du ".$lastMeasure['timestamp']);
+                }
+                if( ($lastMeasure['name'] == 'salinity') && ($lastMeasure['issuer'] != 'strip') ) {
+                        $blueswim->checkAndUpdateCmd('salinity', $lastMeasure['value'],date('Y-m-d H:i:s',strtotime($lastMeasure['timestamp'])));
+                        log::add('blueswim', 'info', "salinity: ".$lastMeasure['value']." en date du ".$lastMeasure['timestamp']);
                 }
             }
         }

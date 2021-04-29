@@ -6,7 +6,7 @@
 		"en_US": "Plugin for Blue Connect"
 	},
 	"licence" : "AGPL",
-	"author" : "Christophe Lampin",
+	"author" : "Kitof",
 	"require" : "3.3.39",
 	"category" : "devicecommunication",
 	"hasDependency" : false,
