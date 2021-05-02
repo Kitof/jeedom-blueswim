@@ -114,11 +114,28 @@ class blueswim extends eqLogic {
 
         $credentials = self::login();
         if($credentials === false) return false;
-        
-        $client = new Client();
-        $s4 = new SignatureV4("execute-api", 'eu-west-1');
 
-        $request = new Request('GET', "https://api.riiotlabs.com/prod/swimming_pool?deleted=false");
+        try {
+            $client = new Client();
+        } catch (Exception $e) {
+            log::add('blueswim', 'error', "Erreur GuzzleHttp: ".$e->getMessage());
+            return false;
+        }
+
+        try {
+            $s4 = new SignatureV4("execute-api", 'eu-west-1');
+        } catch (Exception $e) {
+            log::add('blueswim', 'error', "Erreur SignatureV4: ".$e->getMessage());
+            return false;
+        }
+
+        try {
+            $request = new Request('GET', "https://api.riiotlabs.com/prod/swimming_pool?deleted=false");
+        } catch (Exception $e) {
+            log::add('blueswim', 'error', "Erreur Psr7: ".$e->getMessage());
+            return false;
+        }
+
         $signedrequest = $s4->signRequest($request, $credentials);
         $response = $client->send($signedrequest);
         log::add('blueswim', 'debug', "Liste des piscines: ".$response->getBody());
