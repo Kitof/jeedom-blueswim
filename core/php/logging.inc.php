@@ -6,7 +6,7 @@ define('ENV', 'dev');
 
 // Custom error handling vars
 define('DISPLAY_ERRORS', TRUE);
-define('ERROR_REPORTING', E_ALL | E_STRICT);
+define('ERROR_REPORTING', E_ERROR);
 define('LOG_ERRORS', TRUE);
 
 register_shutdown_function('shut');
