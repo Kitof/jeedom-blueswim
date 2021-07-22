@@ -84,8 +84,9 @@ class blueswim extends eqLogic {
       }
      */
     public static function login($force=false) {
-        if((self::$_credentials != null) && (!$force)) {
-            log::add('blueswim', 'info', "Utilisation du cache d'authentification");
+        if(cache::exist('blueswim::credentials') && !$force) {
+            log::add('blueswim', 'debug', "Utilisation du cache d'authentification");
+            self::$_credentials = unserialize(cache::byKey('blueswim::credentials')->getValue());
             return self::$_credentials;
         }
         $request_http = new com_http('https://api.riiotlabs.com/prod/user/login');
@@ -105,7 +106,8 @@ class blueswim extends eqLogic {
             return false;
         }
         self::$_credentials = new Credentials($secrets["credentials"]["access_key"], $secrets["credentials"]["secret_key"], $secrets["credentials"]["session_token"]);
-        log::add('blueswim', 'info', "Authentification réussie: ".self::$_credentials->serialize());   
+        cache::set('blueswim::credentials', serialize(self::$_credentials));
+        log::add('blueswim', 'info', "Authentification réussie");   
         return self::$_credentials;
     }
     
@@ -114,30 +116,14 @@ class blueswim extends eqLogic {
 
         $credentials = self::login();
         if($credentials === false) return false;
+        
+        $client = new Client();
+        $s4 = new SignatureV4("execute-api", 'eu-west-1');
 
-        try {
-            $client = new Client();
-        } catch (Exception $e) {
-            log::add('blueswim', 'error', "Erreur GuzzleHttp: ".$e->getMessage());
-            return false;
-        }
-
-        try {
-            $s4 = new SignatureV4("execute-api", 'eu-west-1');
-        } catch (Exception $e) {
-            log::add('blueswim', 'error', "Erreur SignatureV4: ".$e->getMessage());
-            return false;
-        }
-
-        try {
-            $request = new Request('GET', "https://api.riiotlabs.com/prod/swimming_pool?deleted=false");
-        } catch (Exception $e) {
-            log::add('blueswim', 'error', "Erreur Psr7: ".$e->getMessage());
-            return false;
-        }
-
+        $request = new Request('GET', "https://api.riiotlabs.com/prod/swimming_pool?deleted=false");
         $signedrequest = $s4->signRequest($request, $credentials);
         $response = $client->send($signedrequest);
+        log::add('blueswim', 'debug', "Status Code: ".$response->getStatusCode());
         log::add('blueswim', 'debug', "Liste des piscines: ".$response->getBody());
         $swimming_pools = json_decode($response->getBody(), true);
         foreach($swimming_pools["data"] as $swimming_pool) {
@@ -361,11 +347,17 @@ class blueswim extends eqLogic {
                 $credentials = self::login($force);
                 if($credentials === false) return false;
                 $signedrequest = $s4->signRequest($request, $credentials);
-                $response = $client->send($signedrequest);
-                if($response->getStatusCode() == 200) break;
-                log::add('blueswim', 'info', "Code erreur ".$response->getStatusCode()." à la récupération des données. Retry.");
-                $force = true;
-                $retry--;
+                try {
+                    $response = $client->send($signedrequest);
+                }
+                catch (\Exception $e) {
+                    log::add('blueswim', 'debug', "Renouvellement du cookie");
+                    cache::delete('blueswim::credentials');
+                    $force = true;
+                    $retry--;
+                    continue;
+                }
+                break;
             }
             if($response->getStatusCode() != 200) {
                 log::add('blueswim', 'error', "Code erreur ".$response->getStatusCode()." à la récupération des données.");
