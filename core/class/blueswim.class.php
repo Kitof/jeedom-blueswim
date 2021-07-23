@@ -280,6 +280,25 @@ class blueswim extends eqLogic {
             $cmd->setDisplay('generic_type', 'GENERIC');
             $cmd->save();
         }
+
+        if($this->getConfiguration('device') == 'blueplus') {
+            $cmd = $this->getCmd(null, 'conductivity');
+            if (!is_object($cmd)) {
+                $cmd = new blueswimCmd();
+                $cmd->setLogicalId('conductivity');
+                $cmd->setUnite('µS');
+                $cmd->setIsVisible(1);
+                $cmd->setIsHistorized(1);
+                $cmd->setName(__('Conductivity', __FILE__));
+                $cmd->setConfiguration('minValue' , '0');
+                $cmd->setConfiguration('maxValue' , '15000');
+            }
+            $cmd->setType('info');
+            $cmd->setSubType('numeric');
+            $cmd->setEqLogic_id($this->getId());
+            $cmd->setDisplay('generic_type', 'GENERIC');
+            $cmd->save();
+        }
         
         $cmd = $this->getCmd(null, 'refresh');
         if (!is_object($cmd)) {
