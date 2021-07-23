@@ -299,7 +299,7 @@ class blueswim extends eqLogic {
             $cmd->setDisplay('generic_type', 'GENERIC');
             $cmd->save();
         }
-        
+
         $cmd = $this->getCmd(null, 'refresh');
         if (!is_object($cmd)) {
                 $cmd = new blueswimCmd();
@@ -402,6 +402,10 @@ class blueswim extends eqLogic {
                 if( ($lastMeasure['name'] == 'salinity') && ($lastMeasure['issuer'] != 'strip') ) {
                         $blueswim->checkAndUpdateCmd('salinity', $lastMeasure['value'],date('Y-m-d H:i:s',strtotime($lastMeasure['timestamp'])));
                         log::add('blueswim', 'info', "salinity: ".$lastMeasure['value']." en date du ".$lastMeasure['timestamp']);
+                }
+                if( ($lastMeasure['name'] == 'conductivity') && ($lastMeasure['issuer'] != 'strip') ) {
+                    $blueswim->checkAndUpdateCmd('conductivity', $lastMeasure['value'],date('Y-m-d H:i:s',strtotime($lastMeasure['timestamp'])));
+                    log::add('blueswim', 'info', "conductivity: ".$lastMeasure['value']." en date du ".$lastMeasure['timestamp']);
                 }
             }
         }
