@@ -168,6 +168,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                                             </div>
 
                                                             <div class="form-group">
+                                                                <label class="col-sm-3 control-label">{{Dernière Mesure}}</label>
+                                                                <div class="col-sm-3">
+                                                                    <span class="eqLogicAttr label label-default" data-l1key="configuration" data-l2key="lastMeasure" id="lastMeasurefield"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
                                                                 <label class="col-sm-3 control-label">{{Dernière Activité}}</label>
                                                                 <div class="col-sm-3">
                                                                     <span class="eqLogicAttr label label-default" data-l1key="status" data-l2key="lastCommunication"></span>
@@ -185,6 +192,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                                                 <label class="col-sm-3 control-label">{{Identifiant Blueriiot Piscine}}</label>
                                                                 <div class="col-sm-3">
                                                                     <span class="eqLogicAttr label label-default" data-l1key="configuration" data-l2key="swimming_pool_id"></span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="col-sm-3 control-label">{{Etat}}</label>
+                                                                <div class="col-sm-3">
+                                                                    <span class="eqLogicAttr label label-default" data-l1key="configuration" data-l2key="sleepState"></span>
                                                                 </div>
                                                             </div>
 
